@@ -25,8 +25,6 @@ public class ServerChat implements IServerChat {
         //if (existing_room != null){
             //já existe uma room com esse nome
         //}
-
-        throw new UnsupportedOperationException("Unimplemented method 'createRoom'");
     }
     
     public static void main(String[] args) {
