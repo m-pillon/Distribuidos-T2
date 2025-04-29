@@ -11,20 +11,31 @@ public class UserChat extends UnicastRemoteObject implements IUserChat {
 
     private String userName;
     private String roomName;
+    private IRoomChat roomChat;
     private IServerChat serverChat;
-    
+
     @Override
     public void deliverMsg(String senderName, String msg) {
         System.out.println("[" + roomName + "] " + senderName + ": " + msg);
     }
     
-    public void joinRoom(String roomName){
+    public void joinRoom(String newRoomName){
+        if (roomChat != null){
+            try {
+                IRoomChat oldRoom = (IRoomChat) Naming.lookup(this.roomName);
+                oldRoom.leaveRoom(userName);
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
+        }
+
         try {
-            IRoomChat room = (IRoomChat) Naming.lookup(roomName);
+            IRoomChat room = (IRoomChat) Naming.lookup(newRoomName);
             room.joinRoom(userName, this);
         } catch (NotBoundException e) {
-            serverChat.createRoom(roomName);
-            joinRoom(roomName);
+            //sala não existe, cria ela 
+            serverChat.createRoom(newRoomName);
+            joinRoom(newRoomName);
         } catch (Exception e) {
             // TODO: handle exception
         }
