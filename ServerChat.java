@@ -1,16 +1,9 @@
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.rmi.*;
 import java.rmi.server.UnicastRemoteObject;
 
 public class ServerChat implements IServerChat {
 
-    private Map<String, IRoomChat> roomList;
-
-    public ServerChat(){
-        roomList = new HashMap<>();
-    }
 
     @Override
     public ArrayList<String> getRooms() {
