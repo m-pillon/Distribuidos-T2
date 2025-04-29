@@ -1,4 +1,4 @@
-RFA1 - classes need to extend interfaces 
+RFA1 - OK 
 RFA2
 RFA3
 RFA4

@@ -1,8 +1,18 @@
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class RoomChat implements IRoomChat {
+public class RoomChat extends UnicastRemoteObject implements IRoomChat {
+    protected RoomChat(String roomName) throws RemoteException {
+        this.roomName = roomName;
+        this.userList = new java.util.HashMap<String, IUserChat>();
+        //TODO Auto-generated constructor stub
+    }
+
     private String roomName;
-    private List<IUserChat> users;
+    private Map<String, IUserChat> userList;
 
     @Override
     public void sendMsg(String usrName, String msg) {
