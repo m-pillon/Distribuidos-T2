@@ -1,23 +1,27 @@
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.rmi.*;
-import java.rmi.server.UnicastRemoteObject;
+import java.util.Map;
 
-public class ServerChat implements IServerChat {
+public class ServerChat extends UnicastRemoteObject implements IServerChat {
+    protected ServerChat() throws RemoteException {
+        super();
+        //TODO Auto-generated constructor stub
+    }
 
+    private Map<String, IRoomChat> roomList;
 
-    @Override
     public ArrayList<String> getRooms() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getRooms'");
+        return new ArrayList<>(roomList.keySet());
     }
 
     @Override
     public void createRoom(String roomName) {
-        roomList.putIfAbsent(roomName, new RoomChat());
-        //IRoomChat existing_room = roomList.putIfAbsent(roomName, new RoomChat());
-        //if (existing_room != null){
-            //já existe uma room com esse nome
-        //}
+        IRoomChat existing_room = roomList.putIfAbsent(roomName, new RoomChat());
+        if (existing_room != null){
+            System.out.println("Room already exists.");
+        }
     }
     
     public static void main(String[] args) {
