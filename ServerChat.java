@@ -8,7 +8,7 @@ import java.util.Map;
 public class ServerChat extends UnicastRemoteObject implements IServerChat {
     protected ServerChat() throws RemoteException {
         super();
-        roomList = new HashMap<String, IRoomChat>();
+        this.roomList = new HashMap<String, IRoomChat>();
     }
 
     private Map<String, IRoomChat> roomList;
