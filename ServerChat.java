@@ -32,8 +32,8 @@ public class ServerChat extends UnicastRemoteObject implements IServerChat {
     public static void main(String[] args) {
         try {
             ServerChat newServer = new ServerChat();
-            ServerChat stub = (ServerChat) UnicastRemoteObject.exportObject(newServer, 0);
-            Naming.rebind("nomeWIP", stub);
+            ServerChat stub = (ServerChat) UnicastRemoteObject.exportObject(newServer, 2020);
+            Naming.rebind("servidor", stub);
         } catch (Exception e) {
             // TODO: handle exception
         }
