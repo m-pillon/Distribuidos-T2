@@ -1,6 +1,7 @@
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.rmi.*;
 import java.util.Map;
 
 public class ServerChat extends UnicastRemoteObject implements IServerChat {
@@ -11,11 +12,12 @@ public class ServerChat extends UnicastRemoteObject implements IServerChat {
 
     private Map<String, IRoomChat> roomList;
 
-    public Map<String, IRoomChat> getRooms() {
-        return roomList;
+    public ArrayList<String> getRooms() {
+        return new ArrayList<>(roomList.keySet());
     }
 
-    public void createRoom(String roomName) throws RemoteException {
+    @Override
+    public void createRoom(String roomName) {
         if (!roomList.containsKey(roomName)) {
             roomList.put(roomName, new RoomChat(roomName));
         } else {
@@ -23,4 +25,13 @@ public class ServerChat extends UnicastRemoteObject implements IServerChat {
         }
     }
     
+    public static void main(String[] args) {
+        try {
+            ServerChat newServer = new ServerChat();
+            ServerChat stub = (ServerChat) UnicastRemoteObject.exportObject(newServer, 0);
+            Naming.rebind("nomeWIP", stub);
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+    }
 }
