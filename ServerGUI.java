@@ -14,16 +14,16 @@ import javax.swing.JScrollPane;
 
 public class ServerGUI {
 
-    ServerChat server;
     Scanner in;
     PrintWriter out;
     JFrame frame = new JFrame("Chatter");
     JScrollPane scrollPane;
     DefaultListModel<String> listModel = new DefaultListModel<>();
     JList<String> chatList;
+    ServerChat serverChat;
 
     public ServerGUI(ServerChat server) {
-        this.server = server;
+        this.serverChat = server;
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.frame.setSize(600, 600);
 
@@ -31,14 +31,8 @@ public class ServerGUI {
     }
 
     private void setupServerGUI() {
-        JLabel label = new JLabel("Number of rooms active: " + server.getNumberOfRooms());
-        label.setHorizontalAlignment(JLabel.CENTER);
-        label.setVerticalAlignment(JLabel.TOP);
-
-        frame.getContentPane().add(label, BorderLayout.NORTH);
-
         // rooms
-        updateListModel();
+        // updateListModel();
 
         chatList = new JList<>(listModel);
         chatList.setLayoutOrientation(JList.VERTICAL);
@@ -55,19 +49,10 @@ public class ServerGUI {
     }
 
     private void closeSelectedRoom() {
-        int selectedIndex = chatList.getSelectedIndex();
-        if (selectedIndex != -1) {
-            server.removeRoom((String) chatList.getSelectedValue());
-            updateListModel();
-        } else {
-            JOptionPane.showMessageDialog(frame, "Please select a chat room to close.");
-        }
+        // TODO
     }
 
     private void updateListModel() {
-        listModel.clear();
-        for (String room : server.getRooms()) {
-            listModel.addElement(room);
-        }
+        // TODO
     }
 }

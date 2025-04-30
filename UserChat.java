@@ -14,6 +14,17 @@ public class UserChat extends UnicastRemoteObject implements IUserChat {
     private IRoomChat roomChat;
     private IServerChat serverChat;
 
+    private UserGUI userGUI;
+
+    public UserChat(String userName, String roomName, IServerChat serverChat) throws RemoteException {
+        this.userName = userName;
+        this.roomName = roomName;
+        this.serverChat = serverChat;
+        this.userGUI = new UserGUI(this);
+        // this.userGUI.setUserName(userName);
+        // this.userGUI.setRoomName(roomName);
+    }
+
     @Override
     public void deliverMsg(String senderName, String msg) {
         System.out.println("[" + roomName + "] " + senderName + ": " + msg);

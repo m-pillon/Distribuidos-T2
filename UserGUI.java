@@ -13,13 +13,9 @@ public class UserGUI {
     private JButton leaveButton;
     private JButton joinButton;
     private JButton createButton;
-
-    private String selectedRoom;
-
     private UserChat user;
-    private RoomChat room;
 
-    public UserGUI(UserChat user, ServerChat server) {
+    public UserGUI(UserChat user) {
         this.user = user;
         this.frame = new JFrame("User Chat");
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -28,11 +24,16 @@ public class UserGUI {
         setupUserGUI();
     }
 
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
+    }
+
     private void createRoom() {
-        String roomName = javax.swing.JOptionPane.showInputDialog(frame, "Enter room name:");
-        if (roomName != null && !roomName.isEmpty()) {
-            user.getServerChat().createRoom(roomName);
-        }
+        // TODO
     }
 
     private void setupUserGUI() {
@@ -61,27 +62,14 @@ public class UserGUI {
     }
 
     private void sendMessage() {
-        String message = textArea.getText();
-        if (!message.isEmpty()) {
-            user.deliverMsg(userName, message);
-            textArea.setText("");
-        }
+        // TODO
     }
 
     private void leaveRoom() {
-        if (room != null) {
-            room.leaveRoom(userName);
-            room = null;
-        }
+        // TODO
     }
 
     private void joinRoom() {
-        ArrayList<String> rooms = user.getServerChat().getRooms();
-        javax.swing.JOptionPane.showMessageDialog(frame, "Available rooms: " + rooms.toString());
-        String roomName = javax.swing.JOptionPane.showInputDialog(frame, "Enter room name:");
-        if (roomName != null && !roomName.isEmpty()) {
-            user.joinRoom(roomName);
-            this.roomName = roomName;
-        }
+        // TODO
     }
 }

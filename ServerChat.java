@@ -6,12 +6,13 @@ import java.rmi.*;
 import java.util.Map;
 
 public class ServerChat extends UnicastRemoteObject implements IServerChat {
-    protected ServerChat() throws RemoteException {
-        super();
+    private Map<String, IRoomChat> roomList;
+    private ServerGUI serverGUI;
+
+    public ServerChat() throws RemoteException {
+        this.serverGUI = new ServerGUI(this);
         this.roomList = new HashMap<String, IRoomChat>();
     }
-
-    private Map<String, IRoomChat> roomList;
 
     public ArrayList<String> getRooms() {
         return new ArrayList<>(roomList.keySet());
