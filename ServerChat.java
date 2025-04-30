@@ -17,6 +17,23 @@ public class ServerChat extends UnicastRemoteObject implements IServerChat {
         return new ArrayList<>(roomList.keySet());
     }
 
+    public Integer getNumberOfRooms() {
+        return roomList.size();
+    }
+
+    public void removeRoom(String roomName) {
+        try {
+            IRoomChat room = roomList.remove(roomName);
+            if (room != null) {
+                room.closeRoom();
+            } else {
+                System.out.println("Room not found.");
+            }
+        } catch (Exception e) { 
+            System.out.println("Error removing room: " + e.getMessage());
+        }
+    }
+
     @Override
     public void createRoom(String roomName) {
         try {

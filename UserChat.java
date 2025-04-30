@@ -18,6 +18,10 @@ public class UserChat extends UnicastRemoteObject implements IUserChat {
     public void deliverMsg(String senderName, String msg) {
         System.out.println("[" + roomName + "] " + senderName + ": " + msg);
     }
+
+    public IServerChat getServerChat() {
+        return serverChat;
+    }
     
     public void joinRoom(String newRoomName){
         if (roomChat != null){
