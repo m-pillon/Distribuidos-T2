@@ -2,6 +2,9 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 public class UserChat extends UnicastRemoteObject implements IUserChat {
     protected UserChat() throws RemoteException {
@@ -21,8 +24,32 @@ public class UserChat extends UnicastRemoteObject implements IUserChat {
         this.roomName = roomName;
         this.serverChat = serverChat;
         this.userGUI = new UserGUI(this);
+
+        // add windowlistener to the GUI
+        WindowListener exitListener = new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                leaveRoom();
+            }
+        };
+        userGUI.addWindowListener(exitListener);
         // this.userGUI.setUserName(userName);
         // this.userGUI.setRoomName(roomName);
+    }
+
+    public void leaveRoom() {
+        if (roomChat == null) {
+            return;
+        }
+
+        roomChat.leaveRoom(userName);
+        userName = "";
+        roomChat = null;
+
+        userGUI.leaveButton.setEnabled(false);
+        userGUI.textArea.setEditable(false);
+        userGUI.textArea.setText("");
+        userGUI.frame.setTitle("Join some room to choose a nickname");
     }
 
     @Override

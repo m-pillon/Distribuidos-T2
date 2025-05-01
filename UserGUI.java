@@ -4,15 +4,19 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+
 public class UserGUI {
     public JFrame frame;
-    private JTextArea textArea;
+    public JTextArea textArea;
     private String userName;
     private String roomName;
-    private JButton sendButton;
-    private JButton leaveButton;
-    private JButton joinButton;
-    private JButton createButton;
+    public JButton sendButton;
+    public JButton leaveButton;
+    public JButton joinButton;
+    public JButton createButton;
     private UserChat user;
 
     public UserGUI(UserChat user) {
@@ -60,6 +64,13 @@ public class UserGUI {
 
         frame.setVisible(true);
     }
+
+    public void addWindowListener(WindowListener exitListener) {
+        frame.addWindowListener(exitListener);
+    }
+
+    // TODO add action listeners to buttons
+    // TODO add text field for user input
 
     private void sendMessage() {
         // TODO
