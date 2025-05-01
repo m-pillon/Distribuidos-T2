@@ -7,6 +7,7 @@ import javax.swing.JTextArea;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.rmi.RemoteException;
 
 public class UserGUI {
     public JFrame frame;
@@ -25,11 +26,30 @@ public class UserGUI {
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.frame.setSize(600, 600);
 
+        sendButton = new JButton("Send Message");
+        sendButton.addActionListener(e -> sendMessage());
+
+        leaveButton = new JButton("Leave Room");
+        leaveButton.addActionListener(e -> leaveRoom());
+
+        joinButton = new JButton("Join Room");
+        joinButton.addActionListener(e -> joinRoom());
+
+        createButton = new JButton("Create Room");
+        createButton.addActionListener(e -> createRoom());
+
         setupUserGUI();
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public String setUserName() {
+        String name = javax.swing.JOptionPane.showInputDialog(frame, "Enter your name:", "User Name", javax.swing.JOptionPane.PLAIN_MESSAGE);
+        if (name != null && !name.trim().isEmpty()) {
+            this.userName = name;
+            frame.setTitle("Chat Room - " + userName);
+            return userName;
+        } else {
+            return null;
+        }
     }
 
     public void setRoomName(String roomName) {
@@ -45,23 +65,20 @@ public class UserGUI {
         textArea.setEditable(false);
         frame.add(textArea);
 
-        sendButton = new JButton("Send Message");
-        sendButton.addActionListener(e -> sendMessage());
+        // get available rooms from server - RFA5
+        ArrayList<String> availableRooms = user.getServerChat().getRooms();
+        StringBuilder rooms = new StringBuilder("Available Rooms:\n");
+        for (String room : availableRooms) {
+            rooms.append(room).append("\n");
 
-        leaveButton = new JButton("Leave Room");
-        leaveButton.addActionListener(e -> leaveRoom());
-
-        joinButton = new JButton("Join Room");
-        joinButton.addActionListener(e -> joinRoom());
-
-        createButton = new JButton("Create Room");
-        createButton.addActionListener(e -> createRoom());
-
-        frame.add(sendButton);
-        frame.add(leaveButton);
-        frame.add(joinButton);
-        frame.add(createButton);
-
+            // show join button next to each room
+            JButton joinRoomButton = new JButton("Join " + room);
+            joinRoomButton.addActionListener(e -> {
+                user.joinRoom(room);
+            });
+        }
+        textArea.setText(rooms.toString());
+        
         frame.setVisible(true);
     }
 

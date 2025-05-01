@@ -1,17 +1,14 @@
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 public class UserChat extends UnicastRemoteObject implements IUserChat {
-    protected UserChat() throws RemoteException {
-        super();
-        //TODO Auto-generated constructor stub
-    }
-
     private String userName;
     private String roomName;
     private IRoomChat roomChat;
@@ -19,9 +16,7 @@ public class UserChat extends UnicastRemoteObject implements IUserChat {
 
     private UserGUI userGUI;
 
-    public UserChat(String userName, String roomName, IServerChat serverChat) throws RemoteException {
-        this.userName = userName;
-        this.roomName = roomName;
+    public UserChat(IServerChat serverChat) throws RemoteException {
         this.serverChat = serverChat;
         this.userGUI = new UserGUI(this);
 
@@ -33,7 +28,8 @@ public class UserChat extends UnicastRemoteObject implements IUserChat {
             }
         };
         userGUI.addWindowListener(exitListener);
-        // this.userGUI.setUserName(userName);
+        
+        this.userName = this.userGUI.setUserName();
         // this.userGUI.setRoomName(roomName);
     }
 
@@ -82,5 +78,19 @@ public class UserChat extends UnicastRemoteObject implements IUserChat {
             // TODO: handle exception
         }
         
+    }
+
+    public static void main(String[] args) {
+        int port = 2020; // RFA15
+
+        try {
+            System.out.println("Trying to connect to server on port " + port);
+            Registry Servidor = LocateRegistry.getRegistry("localhost", port);
+            IServerChat server = (IServerChat) Servidor.lookup("ServerChat");
+            new UserChat(server);
+            System.out.println("Connected to server on port " + port);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

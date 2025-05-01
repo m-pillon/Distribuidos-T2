@@ -1,4 +1,5 @@
-import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,9 +10,30 @@ public class ServerChat extends UnicastRemoteObject implements IServerChat {
     private Map<String, IRoomChat> roomList;
     private ServerGUI serverGUI;
 
+    private static Registry Servidor;
+
     public ServerChat() throws RemoteException {
+        setupRegistry(); // RFA15
         this.serverGUI = new ServerGUI(this);
         this.roomList = new HashMap<String, IRoomChat>();
+    }
+
+    private static Registry setupRegistry() {
+        if (Servidor == null) {
+            try {
+                // Create a registry on port 2020
+                Servidor = LocateRegistry.createRegistry(2020);
+            } catch (RemoteException e1) {
+                try {
+                    // If the registry already exists, get it
+                    Servidor = LocateRegistry.getRegistry("localhost", 2020);
+                } catch (RemoteException e2) {
+                    // Handle the exception
+                    System.out.println("Unexpected issue!! " + e2.getMessage());
+                }
+            }
+        }
+        return Servidor;
     }
 
     public ArrayList<String> getRooms() {
@@ -50,10 +72,12 @@ public class ServerChat extends UnicastRemoteObject implements IServerChat {
     public static void main(String[] args) {
         try {
             ServerChat newServer = new ServerChat();
-            ServerChat stub = (ServerChat) UnicastRemoteObject.exportObject(newServer, 2020);
-            Naming.rebind("servidor", stub);
+            // RFA15 - Change name to "Servidor"
+            setupRegistry().rebind("Servidor", newServer);
+            System.out.println("Server started. Waiting for clients...");
+            newServer.serverGUI.frame.setVisible(true);
         } catch (Exception e) {
-            // TODO: handle exception
+            System.out.println("Server exception: " + e.getMessage());
         }
     }
 }
