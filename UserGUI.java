@@ -81,7 +81,7 @@ public class UserGUI {
             }
             textArea.setText(rooms.toString());
             
-            frame.add(textArea, BorderLayout.EAST);
+            frame.add(textArea, BorderLayout.CENTER);
             frame.setVisible(true);
         } catch (RemoteException e) {
             e.printStackTrace();
