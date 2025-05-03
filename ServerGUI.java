@@ -1,4 +1,6 @@
 import java.io.PrintWriter;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import java.awt.BorderLayout;
@@ -10,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 
 public class ServerGUI {
@@ -21,6 +24,8 @@ public class ServerGUI {
     DefaultListModel<String> listModel = new DefaultListModel<>();
     JList<String> chatList;
     ServerChat serverChat;
+    JTextArea textArea = new JTextArea(20, 50);
+    JLabel label = new JLabel("Available Rooms:");
 
     public ServerGUI(ServerChat server) {
         this.serverChat = server;
@@ -28,6 +33,15 @@ public class ServerGUI {
         this.frame.setSize(600, 600);
 
         setupServerGUI();
+    }
+
+    public void updateRoomList(String roomName) {
+        StringBuilder rooms = new StringBuilder("Available Rooms:\n");
+        ArrayList<String> availableRooms = serverChat.getRooms();
+        for (String room : availableRooms) {
+            rooms.append(room).append("\n");
+        }
+        textArea.setText(rooms.toString());
     }
 
     private void setupServerGUI() {
@@ -46,6 +60,9 @@ public class ServerGUI {
 
         frame.add(scrollPane, BorderLayout.CENTER);
         frame.add(closeRoomButton, BorderLayout.SOUTH);
+
+        frame.add(label, BorderLayout.NORTH);
+        frame.add(textArea, BorderLayout.EAST); 
     }
 
     private void closeSelectedRoom() {

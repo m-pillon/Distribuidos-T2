@@ -24,7 +24,12 @@ public class UserChat extends UnicastRemoteObject implements IUserChat {
         WindowListener exitListener = new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                leaveRoom();
+                try {
+                    leaveRoom();
+                } catch (RemoteException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
             }
         };
         userGUI.addWindowListener(exitListener);
@@ -33,7 +38,7 @@ public class UserChat extends UnicastRemoteObject implements IUserChat {
         // this.userGUI.setRoomName(roomName);
     }
 
-    public void leaveRoom() {
+    public void leaveRoom() throws RemoteException {
         if (roomChat == null) {
             return;
         }

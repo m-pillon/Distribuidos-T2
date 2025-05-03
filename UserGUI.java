@@ -57,7 +57,34 @@ public class UserGUI {
     }
 
     private void createRoom() {
-        // TODO
+        String roomName = javax.swing.JOptionPane.showInputDialog(frame, "Enter room name:", "Create Room", javax.swing.JOptionPane.PLAIN_MESSAGE);
+        if (roomName != null && !roomName.trim().isEmpty()) {
+            try {
+                user.getServerChat().createRoom(roomName);
+                setRoomName(roomName);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(frame, "Room name cannot be empty.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public void updateRoomList(String roomName) {
+        StringBuilder rooms = new StringBuilder("Available Rooms:\n");
+        try {
+            ArrayList<String> availableRooms = user.getServerChat().getRooms();
+            for (String room : availableRooms) {
+                rooms.append(room).append("\n");
+            }
+            textArea.setText(rooms.toString());
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateTextArea(String message) {
+        textArea.append(message + "\n");
     }
 
     private void setupUserGUI() {
@@ -71,21 +98,18 @@ public class UserGUI {
         try {
             ArrayList<String> availableRooms = user.getServerChat().getRooms();
             StringBuilder rooms = new StringBuilder("Available Rooms:\n");
+           // print available rooms
             for (String room : availableRooms) {
                 rooms.append(room).append("\n");
-
-                // show join button next to each room
-                JButton joinRoomButton = new JButton("Join " + room);
-                joinRoomButton.addActionListener(e -> {
-                    user.joinRoom(room);
-                });
-                frame.add(joinRoomButton);
             }
-
+            // set text area to available rooms
             textArea.setText(rooms.toString());
+            frame.add(textArea, "Center");
         } catch (Exception e) {
-            // TODO: handle exception
+            System.out.println("Error getting available rooms: " + e.getMessage());
         }
+
+        frame.add(joinButton, "South");
         
         frame.setVisible(true);
     }

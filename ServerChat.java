@@ -60,12 +60,16 @@ public class ServerChat extends UnicastRemoteObject implements IServerChat {
     @Override
     public void createRoom(String roomName) {
         try {
-            IRoomChat existing_room = roomList.putIfAbsent(roomName, new RoomChat(roomName));
-            if (existing_room != null){
-                System.out.println("Room already exists.");
+            System.out.println("Creating room: " + roomName);
+            RoomChat room = new RoomChat(roomName);
+            if (roomList.put(roomName, room) == null) {
+                serverGUI.updateRoomList(roomName);
+                System.out.println("Room created: " + roomName);
+            } else {
+                System.out.println("Room already exists: " + roomName);
             }
         } catch (Exception e) {
-            // TODO: handle exception
+            System.out.println("Error creating room: " + e.getMessage());
         }
     }
     
