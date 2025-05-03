@@ -34,7 +34,13 @@ public class UserGUI {
         leaveButton.addActionListener(e -> leaveRoom());
 
         joinButton = new JButton("Join Room");
-        joinButton.addActionListener(e -> joinRoom());
+        joinButton.addActionListener(e -> {
+            try {
+                joinRoom();
+            } catch (RemoteException e1) {
+                System.out.println("Error joining room: " + e1.getMessage());
+            }
+        });
 
         createButton = new JButton("Create Room");
         createButton.addActionListener(e -> createRoom());
@@ -134,7 +140,25 @@ public class UserGUI {
         // TODO
     }
 
-    private void joinRoom() {
-        // TODO
+    private void setupChatGUI() {
+        textArea.setEditable(true);
+        frame.setTitle("Chat Room - " + userName + " - " + roomName);
+        frame.add(sendButton, BorderLayout.SOUTH);
+        frame.add(leaveButton, BorderLayout.EAST);
+    }
+
+    private void joinRoom() throws RemoteException {
+        String roomName = javax.swing.JOptionPane.showInputDialog(frame, "Enter room name:", "Join Room", javax.swing.JOptionPane.PLAIN_MESSAGE);
+        if (roomName != null && !roomName.trim().isEmpty()) {
+            Boolean joined = user.joinRoom(roomName);
+            if (joined) {
+                setRoomName(roomName);
+                setupChatGUI();
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(frame, "Room not found. Try creating it!", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(frame, "Room name cannot be empty.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
     }
 }

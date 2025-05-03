@@ -30,7 +30,7 @@ public class RoomChat extends UnicastRemoteObject implements IRoomChat {
 
     @Override
     public void joinRoom(String userName, IUserChat user) throws RemoteException {
-        userList.putIfAbsent(userName, user);
+        userList.put(userName, user);
     }
 
     @Override
