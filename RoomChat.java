@@ -1,4 +1,7 @@
+import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,6 +12,13 @@ public class RoomChat extends UnicastRemoteObject implements IRoomChat {
     protected RoomChat(String roomName) throws RemoteException {
         this.roomName = roomName;
         this.userList = new java.util.HashMap<String, IUserChat>();
+
+        try {
+            Registry servidor = LocateRegistry.getRegistry("localhost", 2020);
+            servidor.rebind(roomName, this);
+        } catch (Exception e) {
+            System.out.println("Error creating room object: " + e.getMessage());            
+        }
     }
 
     private String roomName;
