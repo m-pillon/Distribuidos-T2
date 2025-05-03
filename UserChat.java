@@ -89,6 +89,15 @@ public class UserChat extends UnicastRemoteObject implements IUserChat {
         
     }
 
+    public void createRoom(String roomName){
+        try {
+            serverChat.createRoom(roomName);
+            // joinRoom(roomName);
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+    }
+
     public static void main(String[] args) {
         int port = 2020; // RFA15
 
