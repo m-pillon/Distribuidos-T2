@@ -1,6 +1,7 @@
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +17,7 @@ public class RoomChat extends UnicastRemoteObject implements IRoomChat {
 
     @Override
     public void sendMsg(String usrName, String msg) {
-        Map<String, IUserChat> receivers = userList;
+        Map<String, IUserChat> receivers = new HashMap<String, IUserChat>(userList);
         receivers.remove(usrName);
 
         for (IUserChat user : receivers.values()) {
