@@ -30,14 +30,12 @@ public class RoomChat extends UnicastRemoteObject implements IRoomChat {
 
     @Override
     public void joinRoom(String userName, IUserChat user) throws RemoteException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'joinRoom'");
+        userList.putIfAbsent(userName, user);
     }
 
     @Override
     public void leaveRoom(String usrName) throws RemoteException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'leaveRoom'");
+        userList.remove(usrName);
     }
 
     @Override
