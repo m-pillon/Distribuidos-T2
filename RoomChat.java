@@ -16,8 +16,16 @@ public class RoomChat extends UnicastRemoteObject implements IRoomChat {
 
     @Override
     public void sendMsg(String usrName, String msg) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'sendMsg'");
+        Map<String, IUserChat> receivers = userList;
+        receivers.remove(usrName);
+
+        for (IUserChat user : receivers.values()) {
+            try {
+                user.deliverMsg(usrName, msg);
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
+        }
     }
 
     @Override
