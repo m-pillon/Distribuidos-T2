@@ -65,6 +65,8 @@ public class UserGUI {
         textArea.setEditable(false);
         frame.add(textArea);
 
+        frame.add(createButton, "North");
+
         // get available rooms from server - RFA5
         try {
             ArrayList<String> availableRooms = user.getServerChat().getRooms();
@@ -77,6 +79,7 @@ public class UserGUI {
                 joinRoomButton.addActionListener(e -> {
                     user.joinRoom(room);
                 });
+                frame.add(joinRoomButton);
             }
 
             textArea.setText(rooms.toString());
