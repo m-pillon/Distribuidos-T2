@@ -57,7 +57,9 @@ public class UserGUI {
     }
 
     private void createRoom() {
-        // TODO
+        String roomName = javax.swing.JOptionPane.showInputDialog(frame, "Enter room name:", "New Room", javax.swing.JOptionPane.PLAIN_MESSAGE);
+        
+        this.user.createRoom(roomName);
     }
 
     private void setupUserGUI() {
