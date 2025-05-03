@@ -66,18 +66,23 @@ public class UserGUI {
         frame.add(textArea);
 
         // get available rooms from server - RFA5
-        ArrayList<String> availableRooms = user.getServerChat().getRooms();
-        StringBuilder rooms = new StringBuilder("Available Rooms:\n");
-        for (String room : availableRooms) {
-            rooms.append(room).append("\n");
+        try {
+            ArrayList<String> availableRooms = user.getServerChat().getRooms();
+            StringBuilder rooms = new StringBuilder("Available Rooms:\n");
+            for (String room : availableRooms) {
+                rooms.append(room).append("\n");
 
-            // show join button next to each room
-            JButton joinRoomButton = new JButton("Join " + room);
-            joinRoomButton.addActionListener(e -> {
-                user.joinRoom(room);
-            });
+                // show join button next to each room
+                JButton joinRoomButton = new JButton("Join " + room);
+                joinRoomButton.addActionListener(e -> {
+                    user.joinRoom(room);
+                });
+            }
+
+            textArea.setText(rooms.toString());
+        } catch (Exception e) {
+            // TODO: handle exception
         }
-        textArea.setText(rooms.toString());
         
         frame.setVisible(true);
     }

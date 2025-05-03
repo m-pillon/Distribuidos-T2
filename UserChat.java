@@ -70,10 +70,14 @@ public class UserChat extends UnicastRemoteObject implements IUserChat {
         try {
             IRoomChat room = (IRoomChat) Naming.lookup(newRoomName);
             room.joinRoom(userName, this);
-        } catch (NotBoundException e) {
-            //sala não existe, cria ela 
-            serverChat.createRoom(newRoomName);
-            joinRoom(newRoomName);
+        } catch (NotBoundException notBound) {
+            //sala não existe, cria ela             
+            try {
+                serverChat.createRoom(newRoomName);
+                joinRoom(newRoomName);
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
         } catch (Exception e) {
             // TODO: handle exception
         }
@@ -86,7 +90,7 @@ public class UserChat extends UnicastRemoteObject implements IUserChat {
         try {
             System.out.println("Trying to connect to server on port " + port);
             Registry Servidor = LocateRegistry.getRegistry("localhost", port);
-            IServerChat server = (IServerChat) Servidor.lookup("ServerChat");
+            IServerChat server = (IServerChat) Servidor.lookup("Servidor");
             new UserChat(server);
             System.out.println("Connected to server on port " + port);
         } catch (Exception e) {
