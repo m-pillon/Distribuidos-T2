@@ -4,6 +4,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
 
+import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -61,6 +62,7 @@ public class UserGUI {
         if (roomName != null && !roomName.trim().isEmpty()) {
             try {
                 user.getServerChat().createRoom(roomName);
+                updateRoomList(roomName);
                 setRoomName(roomName);
             } catch (RemoteException e) {
                 e.printStackTrace();
@@ -78,6 +80,9 @@ public class UserGUI {
                 rooms.append(room).append("\n");
             }
             textArea.setText(rooms.toString());
+            
+            frame.add(textArea, BorderLayout.EAST);
+            frame.setVisible(true);
         } catch (RemoteException e) {
             e.printStackTrace();
         }

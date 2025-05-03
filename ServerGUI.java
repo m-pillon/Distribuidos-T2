@@ -42,6 +42,8 @@ public class ServerGUI {
             rooms.append(room).append("\n");
         }
         textArea.setText(rooms.toString());
+        frame.add(textArea, BorderLayout.EAST);
+        frame.setVisible(true);
     }
 
     private void setupServerGUI() {
