@@ -62,9 +62,7 @@ public class UserChat extends UnicastRemoteObject implements IUserChat {
         return serverChat;
     }
     
-    //procura uma sala no registry e entra nela. retorna true se achou e entrou na sala, false se não achar ou houver algum erro
     public Boolean joinRoom(String newRoomName){
-        //se ja estamos em uma sala, saímos dela
         if (roomChat != null){
             try {
                 IRoomChat oldRoom = (IRoomChat) Naming.lookup(this.roomName);
@@ -78,25 +76,11 @@ public class UserChat extends UnicastRemoteObject implements IUserChat {
             IRoomChat room = (IRoomChat) Naming.lookup(newRoomName);
             room.joinRoom(userName, this);
             return true;
-        } catch (NotBoundException notBound) {
-            //sala não existe, avise o usuário no GUI            
+        } catch (Exception e) {
+            //sala não existe
+            System.out.println("Error joining room: " + e.getMessage());            
             return false;
-        } catch (Exception e) {
-            // TODO: handle exception
-        }
-        return false;
-    }
-
-    public void createRoom(String roomName){
-        try {
-            //cria a sala nova
-            serverChat.createRoom(roomName);
-            //entra nela
-            IRoomChat room = (IRoomChat) Naming.lookup(roomName);
-            room.joinRoom(roomName, this);
-        } catch (Exception e) {
-            // TODO: handle exception
-        }
+        } 
     }
 
     public static void main(String[] args) {
