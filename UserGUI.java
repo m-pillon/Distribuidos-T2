@@ -141,10 +141,34 @@ public class UserGUI {
     }
 
     private void setupChatGUI() {
-        textArea.setEditable(true);
-        frame.setTitle("Chat Room - " + userName + " - " + roomName);
-        frame.add(sendButton, BorderLayout.SOUTH);
-        frame.add(leaveButton, BorderLayout.EAST);
+        // clear frame and set up chat GUI
+        frame.getContentPane().removeAll();
+        frame.setLayout(new BorderLayout());
+        frame.add(leaveButton, BorderLayout.NORTH);
+        frame.setTitle("Chat Room - " + roomName);
+
+        // make a text area for chat messages
+        textArea = new JTextArea(20, 50);
+        textArea.setEditable(false);
+        frame.add(textArea, BorderLayout.CENTER);
+
+        // make a text field for user input
+        javax.swing.JTextField textField = new javax.swing.JTextField(50);
+        textField.addActionListener(e -> {
+            String message = textField.getText();
+            if (!message.trim().isEmpty()) {
+                try {
+                    user.getRoomChat().sendMsg(userName, message);
+                    textField.setText("");
+                } catch (RemoteException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+
+        frame.add(textField, BorderLayout.SOUTH);
+
+        frame.setVisible(true);
     }
 
     private void joinRoom() throws RemoteException {

@@ -63,6 +63,10 @@ public class UserChat extends UnicastRemoteObject implements IUserChat {
     public IServerChat getServerChat() {
         return serverChat;
     }
+
+    public IRoomChat getRoomChat() {
+        return roomChat;
+    }
     
     public Boolean joinRoom(String newRoomName){
         if (roomChat != null){
@@ -99,5 +103,10 @@ public class UserChat extends UnicastRemoteObject implements IUserChat {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public Object getRegistry() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getRegistry'");
     }
 }
