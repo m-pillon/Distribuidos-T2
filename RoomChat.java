@@ -46,8 +46,13 @@ public class RoomChat extends UnicastRemoteObject implements IRoomChat {
 
     @Override
     public void closeRoom() throws RemoteException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'closeRoom'");
+        for (IUserChat user : userList.values()) {
+            try {
+                user.deliverMsg("[Servidor]", "Sala fechada pelo servidor.");
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
+        }
     }
     
 }
