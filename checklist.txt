@@ -9,7 +9,7 @@ RFA8 - OK
 RFA9
 RFA10
 RFA11
-RFA12 - OK
-RFA13
+RFA12 - falta GUI (fechar uma sala pelo servidor)
+RFA13 - falta GUI (avisar o usuário que a sala foi fechada)
 RFA14
 RFA15 - OK

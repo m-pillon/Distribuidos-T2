@@ -57,6 +57,15 @@ public class UserChat extends UnicastRemoteObject implements IUserChat {
 
     @Override
     public void deliverMsg(String senderName, String msg) {
+        //mensagem do controlador
+        if (senderName == null) {
+            //sinal que sala foi fechada
+            if (msg.equalsIgnoreCase("Sala fechada pelo servidor.")) {
+                roomChat = null;
+                //TODO: avisar pro usuário no GUI que a sala foi fechada
+            }
+        }
+
         System.out.println("[" + roomName + "] " + senderName + ": " + msg);
     }
 
