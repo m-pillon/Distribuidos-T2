@@ -98,6 +98,7 @@ public class UserChat extends UnicastRemoteObject implements IUserChat {
             IRoomChat room = (IRoomChat) registry.lookup(newRoomName);
             //IRoomChat room = (IRoomChat) Naming.lookup(newRoomName);
             room.joinRoom(userName, this);
+            this.roomChat = room;
             return true;
         } catch (Exception e) {
             //sala não existe
