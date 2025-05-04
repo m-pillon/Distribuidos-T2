@@ -78,7 +78,6 @@ public class ServerChat extends UnicastRemoteObject implements IServerChat {
             ServerChat newServer = new ServerChat();
             // RFA15 - Change name to "Servidor"
             setupRegistry().rebind("Servidor", newServer);
-            System.setProperty("java.rmi.server.hostname", "localhost");
             System.out.println("Server started. Waiting for clients...");
             newServer.serverGUI.frame.setVisible(true);
         } catch (Exception e) {

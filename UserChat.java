@@ -63,19 +63,17 @@ public class UserChat extends UnicastRemoteObject implements IUserChat {
     }
     
     public Boolean joinRoom(String newRoomName){
-        /*if (roomChat != null){
+        if (roomChat != null){
             try {
                 IRoomChat oldRoom = (IRoomChat) Naming.lookup(this.roomName);
                 oldRoom.leaveRoom(userName);
             } catch (Exception e) {
                 // TODO: handle exception
             }
-        }*/
+        }
 
         try {
-            Registry servidor = LocateRegistry.getRegistry("localhost", 2020);
-            IRoomChat room = (IRoomChat) servidor.lookup(roomName);
-            //IRoomChat room = (IRoomChat) Naming.lookup(newRoomName);
+            IRoomChat room = (IRoomChat) Naming.lookup(newRoomName);
             room.joinRoom(userName, this);
             return true;
         } catch (Exception e) {
