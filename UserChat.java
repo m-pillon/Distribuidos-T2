@@ -13,12 +13,14 @@ public class UserChat extends UnicastRemoteObject implements IUserChat {
     private String roomName;
     private IRoomChat roomChat;
     private IServerChat serverChat;
+    private Registry registry;
 
     private UserGUI userGUI;
 
-    public UserChat(IServerChat serverChat) throws RemoteException {
+    public UserChat(IServerChat serverChat, Registry registry) throws RemoteException {
         this.serverChat = serverChat;
         this.userGUI = new UserGUI(this);
+        this.registry = registry;
 
         // add windowlistener to the GUI
         WindowListener exitListener = new WindowAdapter() {
@@ -65,7 +67,7 @@ public class UserChat extends UnicastRemoteObject implements IUserChat {
     public Boolean joinRoom(String newRoomName){
         if (roomChat != null){
             try {
-                IRoomChat oldRoom = (IRoomChat) Naming.lookup(this.roomName);
+                IRoomChat oldRoom = (IRoomChat) registry.lookup(this.roomName);
                 oldRoom.leaveRoom(userName);
             } catch (Exception e) {
                 // TODO: handle exception
@@ -73,7 +75,9 @@ public class UserChat extends UnicastRemoteObject implements IUserChat {
         }
 
         try {
-            IRoomChat room = (IRoomChat) Naming.lookup(newRoomName);
+            
+            IRoomChat room = (IRoomChat) registry.lookup(newRoomName);
+            //IRoomChat room = (IRoomChat) Naming.lookup(newRoomName);
             room.joinRoom(userName, this);
             return true;
         } catch (Exception e) {
@@ -90,7 +94,7 @@ public class UserChat extends UnicastRemoteObject implements IUserChat {
             System.out.println("Trying to connect to server on port " + port);
             Registry Servidor = LocateRegistry.getRegistry("localhost", port);
             IServerChat server = (IServerChat) Servidor.lookup("Servidor");
-            new UserChat(server);
+            new UserChat(server, Servidor);
             System.out.println("Connected to server on port " + port);
         } catch (Exception e) {
             e.printStackTrace();
