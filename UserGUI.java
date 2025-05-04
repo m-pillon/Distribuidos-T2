@@ -171,6 +171,21 @@ public class UserGUI {
         frame.setVisible(true);
     }
 
+    public void getMessage(String senderName, String msg) {
+        if (senderName == null) {
+            // signal that the room was closed
+            if (msg.equalsIgnoreCase("Sala fechada pelo servidor.")) {
+                roomName = null;
+                javax.swing.JOptionPane.showMessageDialog(frame, "Sala fechada pelo servidor.", "Info", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                frame.dispose();
+                frame.removeAll();
+                setupUserGUI();
+            }
+        } else {
+            updateTextArea(senderName + ": " + msg);
+        }
+    }
+
     private void joinRoom() throws RemoteException {
         String roomName = javax.swing.JOptionPane.showInputDialog(frame, "Enter room name:", "Join Room", javax.swing.JOptionPane.PLAIN_MESSAGE);
         if (roomName != null && !roomName.trim().isEmpty()) {

@@ -17,13 +17,13 @@ public class RoomChat extends UnicastRemoteObject implements IRoomChat {
     @Override
     public void sendMsg(String usrName, String msg) throws RemoteException {
         Map<String, IUserChat> receivers = new HashMap<String, IUserChat>(userList);
-        receivers.remove(usrName);
+        // receivers.remove(usrName);
 
         for (IUserChat user : receivers.values()) {
             try {
                 user.deliverMsg(usrName, msg);
             } catch (Exception e) {
-                // TODO: handle exception
+                System.out.println("Erro ao enviar mensagem para " + user.getUserName() + ": " + e.getMessage());
             }
         }
     }

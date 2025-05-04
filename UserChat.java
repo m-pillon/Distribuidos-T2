@@ -63,10 +63,12 @@ public class UserChat extends UnicastRemoteObject implements IUserChat {
             if (msg.equalsIgnoreCase("Sala fechada pelo servidor.")) {
                 roomChat = null;
                 //TODO: avisar pro usuário no GUI que a sala foi fechada
+                userGUI.getMessage("Servidor", msg);
+                return;
             }
         }
-
-        System.out.println("[" + roomName + "] " + senderName + ": " + msg);
+        userGUI.getMessage(senderName, msg);
+        //System.out.println("[" + roomName + "] " + senderName + ": " + msg);
     }
 
     public IServerChat getServerChat() {
@@ -75,6 +77,10 @@ public class UserChat extends UnicastRemoteObject implements IUserChat {
 
     public IRoomChat getRoomChat() {
         return roomChat;
+    }
+
+    public String getUserName() {
+        return userName;
     }
     
     public Boolean joinRoom(String newRoomName){
