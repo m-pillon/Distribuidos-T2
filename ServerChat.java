@@ -53,6 +53,7 @@ public class ServerChat extends UnicastRemoteObject implements IServerChat {
             IRoomChat room = roomList.remove(roomName);
             if (room != null) {
                 room.closeRoom();
+                setupRegistry().unbind(roomName);
             } else {
                 System.out.println("Room not found.");
             }

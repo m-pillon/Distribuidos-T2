@@ -70,13 +70,9 @@ public class ServerGUI {
     private void closeSelectedRoom() {
         String roomName = javax.swing.JOptionPane.showInputDialog(frame, "Enter room name:", "Close Room", javax.swing.JOptionPane.PLAIN_MESSAGE);
         if (roomName != null && !roomName.trim().isEmpty()) {
-            try {
-                serverChat.getRoom(roomName).closeRoom();
-                listModel.removeElement(roomName);
-                updateRoomList();
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
+            serverChat.removeRoom(roomName);
+            listModel.removeElement(roomName);
+            updateRoomList();
         } else {
             javax.swing.JOptionPane.showMessageDialog(frame, "Room name cannot be empty.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
