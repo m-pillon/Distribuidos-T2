@@ -31,7 +31,7 @@ public class UserGUI {
         sendButton.addActionListener(e -> sendMessage());
 
         leaveButton = new JButton("Leave Room");
-        leaveButton.addActionListener(e -> leaveRoom());
+        // leaveButton.addActionListener(e -> leaveRoom());
 
         joinButton = new JButton("Join Room");
         joinButton.addActionListener(e -> {
@@ -99,6 +99,10 @@ public class UserGUI {
     }
 
     private void setupUserGUI() {
+        // clear frame and set up user GUI
+        frame.getContentPane().removeAll();
+        frame.setLayout(new BorderLayout());
+        frame.setTitle("User Chat - " + userName);
         textArea = new JTextArea(20, 50);
         textArea.setEditable(false);
         frame.add(textArea);
@@ -136,10 +140,6 @@ public class UserGUI {
         // TODO
     }
 
-    private void leaveRoom() {
-        // TODO
-    }
-
     private void setupChatGUI() {
         // clear frame and set up chat GUI
         frame.getContentPane().removeAll();
@@ -167,7 +167,15 @@ public class UserGUI {
         });
 
         frame.add(textField, BorderLayout.SOUTH);
-
+        // leave room
+        leaveButton.addActionListener(e -> {
+            try {
+                user.leaveRoom();
+            } catch (RemoteException ex) {
+                ex.printStackTrace();
+            }
+            setupUserGUI();
+        });
         frame.setVisible(true);
     }
 
@@ -178,7 +186,6 @@ public class UserGUI {
                 roomName = null;
                 javax.swing.JOptionPane.showMessageDialog(frame, "Sala fechada pelo servidor.", "Info", javax.swing.JOptionPane.INFORMATION_MESSAGE);
                 frame.dispose();
-                frame.removeAll();
                 setupUserGUI();
             }
         } else {

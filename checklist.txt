@@ -6,7 +6,7 @@ RFA5 - OK
 RFA6 - OK
 RFA7 - OK
 RFA8 - OK
-RFA9
+RFA9 - OK
 RFA10 - OK
 RFA11
 RFA12 - falta GUI (fechar uma sala pelo servidor)

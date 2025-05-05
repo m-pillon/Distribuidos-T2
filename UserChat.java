@@ -68,11 +68,14 @@ public class UserChat extends UnicastRemoteObject implements IUserChat {
             }
         }
         userGUI.getMessage(senderName, msg);
-        //System.out.println("[" + roomName + "] " + senderName + ": " + msg);
     }
 
     public IServerChat getServerChat() {
         return serverChat;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
     }
 
     public IRoomChat getRoomChat() {
@@ -89,7 +92,7 @@ public class UserChat extends UnicastRemoteObject implements IUserChat {
                 IRoomChat oldRoom = (IRoomChat) registry.lookup(this.roomName);
                 oldRoom.leaveRoom(userName);
             } catch (Exception e) {
-                // TODO: handle exception
+                System.out.println("Error leaving old room: " + e.getMessage());
             }
         }
 
