@@ -36,6 +36,10 @@ public class ServerChat extends UnicastRemoteObject implements IServerChat {
         return Servidor;
     }
 
+    public IRoomChat getRoom(String roomName) {
+        return roomList.get(roomName);
+    }
+
     public ArrayList<String> getRooms() {
         return new ArrayList<>(roomList.keySet());
     }
@@ -63,7 +67,7 @@ public class ServerChat extends UnicastRemoteObject implements IServerChat {
             System.out.println("Creating room: " + roomName);
             RoomChat room = new RoomChat(roomName);
             if (roomList.put(roomName, room) == null) {
-                serverGUI.updateRoomList(roomName);
+                serverGUI.updateRoomList();
                 setupRegistry().rebind(roomName, room);
                 System.out.println("Room created: " + roomName);
             } else {

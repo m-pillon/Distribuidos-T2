@@ -100,6 +100,7 @@ public class UserGUI {
 
     private void setupUserGUI() {
         // clear frame and set up user GUI
+        frame.dispose();
         frame.getContentPane().removeAll();
         frame.setLayout(new BorderLayout());
         frame.setTitle("User Chat - " + userName);
@@ -142,6 +143,7 @@ public class UserGUI {
 
     private void setupChatGUI() {
         // clear frame and set up chat GUI
+        frame.dispose();
         frame.getContentPane().removeAll();
         frame.setLayout(new BorderLayout());
         frame.add(leaveButton, BorderLayout.NORTH);
@@ -168,26 +170,25 @@ public class UserGUI {
 
         frame.add(textField, BorderLayout.SOUTH);
         // leave room
-        leaveButton.addActionListener(e -> {
-            try {
-                user.leaveRoom();
-            } catch (RemoteException ex) {
-                ex.printStackTrace();
-            }
-            setupUserGUI();
-        });
+        leaveButton.addActionListener(e -> leaveRoom());
         frame.setVisible(true);
+    }
+
+    private void leaveRoom() {
+        try {
+            user.leaveRoom();
+        } catch (RemoteException ex) {
+            ex.printStackTrace();
+        }
+        setupUserGUI();
     }
 
     public void getMessage(String senderName, String msg) {
         if (senderName == null) {
-            // signal that the room was closed
-            if (msg.equalsIgnoreCase("Sala fechada pelo servidor.")) {
-                roomName = null;
-                javax.swing.JOptionPane.showMessageDialog(frame, "Sala fechada pelo servidor.", "Info", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-                frame.dispose();
-                setupUserGUI();
-            }
+            roomName = null;
+            javax.swing.JOptionPane.showMessageDialog(frame, "Sala fechada pelo servidor.", "Info", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            leaveRoom();
+            setupUserGUI();
         } else {
             updateTextArea(senderName + ": " + msg);
         }

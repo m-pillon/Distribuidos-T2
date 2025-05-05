@@ -35,7 +35,7 @@ public class ServerGUI {
         setupServerGUI();
     }
 
-    public void updateRoomList(String roomName) {
+    public void updateRoomList() {
         StringBuilder rooms = new StringBuilder("Available Rooms:\n");
         ArrayList<String> availableRooms = serverChat.getRooms();
         for (String room : availableRooms) {
@@ -68,10 +68,17 @@ public class ServerGUI {
     }
 
     private void closeSelectedRoom() {
-        // TODO
-    }
-
-    private void updateListModel() {
-        // TODO
+        String roomName = javax.swing.JOptionPane.showInputDialog(frame, "Enter room name:", "Close Room", javax.swing.JOptionPane.PLAIN_MESSAGE);
+        if (roomName != null && !roomName.trim().isEmpty()) {
+            try {
+                serverChat.getRoom(roomName).closeRoom();
+                listModel.removeElement(roomName);
+                updateRoomList();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(frame, "Room name cannot be empty.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
     }
 }

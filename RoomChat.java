@@ -40,8 +40,7 @@ public class RoomChat extends UnicastRemoteObject implements IRoomChat {
 
     @Override
     public String getRoomName() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getRoomName'");
+        return roomName;
     }
 
     @Override
@@ -50,7 +49,7 @@ public class RoomChat extends UnicastRemoteObject implements IRoomChat {
             try {
                 user.deliverMsg(null, "Sala fechada pelo servidor.");
             } catch (Exception e) {
-                // TODO: handle exception
+                System.out.println("Erro ao enviar mensagem de fechamento para " + user.getUserName() + ": " + e.getMessage());
             }
         }
     }
