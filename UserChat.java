@@ -53,9 +53,6 @@ public class UserChat extends UnicastRemoteObject implements IUserChat {
         roomChat.leaveRoom(userName);
         roomChat = null;
 
-        userGUI.leaveButton.setEnabled(false);
-        userGUI.textArea.setEditable(false);
-        userGUI.textArea.setText("");
         userGUI.frame.setTitle("Chat Room - " + userName);
     }
 

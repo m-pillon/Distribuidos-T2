@@ -170,6 +170,7 @@ public class UserGUI {
     protected void leaveRoom() {
         try {
             user.leaveRoom();
+            setupUserGUI();
         } catch (RemoteException ex) {
             ex.printStackTrace();
         }
