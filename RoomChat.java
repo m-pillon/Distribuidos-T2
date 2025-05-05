@@ -28,6 +28,14 @@ public class RoomChat extends UnicastRemoteObject implements IRoomChat {
         }
     }
 
+    public ArrayList<UserChat> getUsers() throws RemoteException {
+        ArrayList<UserChat> users = new ArrayList<UserChat>();
+        for (IUserChat user : userList.values()) {
+            users.add((UserChat) user);
+        }
+        return users;
+    }
+
     @Override
     public void joinRoom(String userName, IUserChat user) throws RemoteException {
         userList.put(userName, user);

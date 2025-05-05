@@ -15,7 +15,6 @@ public class UserGUI {
     public JTextArea textArea;
     private String userName;
     private String roomName;
-    public JButton sendButton;
     public JButton leaveButton;
     public JButton joinButton;
     public JButton createButton;
@@ -26,9 +25,6 @@ public class UserGUI {
         this.frame = new JFrame("User Chat");
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.frame.setSize(600, 600);
-
-        sendButton = new JButton("Send Message");
-        sendButton.addActionListener(e -> sendMessage());
 
         leaveButton = new JButton("Leave Room");
         // leaveButton.addActionListener(e -> leaveRoom());
@@ -80,15 +76,15 @@ public class UserGUI {
 
     public void updateRoomList(String roomName) {
         StringBuilder rooms = new StringBuilder("Available Rooms:\n");
+        // clear text area
+        textArea.setText("");
         try {
             ArrayList<String> availableRooms = user.getServerChat().getRooms();
             for (String room : availableRooms) {
                 rooms.append(room).append("\n");
             }
             textArea.setText(rooms.toString());
-            
             frame.add(textArea, BorderLayout.CENTER);
-            frame.setVisible(true);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -111,6 +107,18 @@ public class UserGUI {
         frame.add(createButton, "North");
 
         // get available rooms from server - RFA5
+        updateRoomList();
+
+        frame.add(joinButton, "South");
+        
+        frame.setVisible(true);
+    }
+
+    public void addWindowListener(WindowListener exitListener) {
+        frame.addWindowListener(exitListener);
+    }
+
+    protected void updateRoomList() {
         try {
             ArrayList<String> availableRooms = user.getServerChat().getRooms();
             StringBuilder rooms = new StringBuilder("Available Rooms:\n");
@@ -124,21 +132,6 @@ public class UserGUI {
         } catch (Exception e) {
             System.out.println("Error getting available rooms: " + e.getMessage());
         }
-
-        frame.add(joinButton, "South");
-        
-        frame.setVisible(true);
-    }
-
-    public void addWindowListener(WindowListener exitListener) {
-        frame.addWindowListener(exitListener);
-    }
-
-    // TODO add action listeners to buttons
-    // TODO add text field for user input
-
-    private void sendMessage() {
-        // TODO
     }
 
     private void setupChatGUI() {
@@ -203,6 +196,7 @@ public class UserGUI {
                 setupChatGUI();
             } else {
                 javax.swing.JOptionPane.showMessageDialog(frame, "Room not found. Try creating it!", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+                updateRoomList();
             }
         } else {
             javax.swing.JOptionPane.showMessageDialog(frame, "Room name cannot be empty.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
