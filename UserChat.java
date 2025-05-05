@@ -17,6 +17,7 @@ public class UserChat extends UnicastRemoteObject implements IUserChat {
 
     private UserGUI userGUI;
 
+
     public UserChat(IServerChat serverChat, Registry registry) throws RemoteException {
         this.serverChat = serverChat;
         this.userGUI = new UserGUI(this);
@@ -40,30 +41,32 @@ public class UserChat extends UnicastRemoteObject implements IUserChat {
         // this.userGUI.setRoomName(roomName);
     }
 
+    public UserGUI getUserGUI() {
+        return userGUI;
+    }
+
     public void leaveRoom() throws RemoteException {
         if (roomChat == null) {
             return;
         }
 
         roomChat.leaveRoom(userName);
-        userName = "";
         roomChat = null;
 
         userGUI.leaveButton.setEnabled(false);
         userGUI.textArea.setEditable(false);
         userGUI.textArea.setText("");
-        userGUI.frame.setTitle("Join some room to choose a nickname");
+        userGUI.frame.setTitle("Chat Room - " + userName);
     }
 
     @Override
-    public void deliverMsg(String senderName, String msg) {
+    public void deliverMsg(String senderName, String msg) throws RemoteException {
         //mensagem do controlador
         if (senderName == null) {
             //sinal que sala foi fechada
             if (msg.equalsIgnoreCase("Sala fechada pelo servidor.")) {
-                roomChat = null;
-                //TODO: avisar pro usuário no GUI que a sala foi fechada
-                userGUI.getMessage("Servidor", msg);
+                //roomChat = null;
+                userGUI.getMessage(null, msg);
                 return;
             }
         }

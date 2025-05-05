@@ -48,6 +48,7 @@ public class RoomChat extends UnicastRemoteObject implements IRoomChat {
         for (IUserChat user : userList.values()) {
             try {
                 user.deliverMsg(null, "Sala fechada pelo servidor.");
+                user.leaveRoom();
             } catch (Exception e) {
                 System.out.println("Erro ao enviar mensagem de fechamento para " + user.getUserName() + ": " + e.getMessage());
             }

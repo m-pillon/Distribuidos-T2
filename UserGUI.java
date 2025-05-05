@@ -174,20 +174,20 @@ public class UserGUI {
         frame.setVisible(true);
     }
 
-    private void leaveRoom() {
+    protected void leaveRoom() {
         try {
             user.leaveRoom();
         } catch (RemoteException ex) {
             ex.printStackTrace();
         }
-        setupUserGUI();
     }
 
-    public void getMessage(String senderName, String msg) {
+    public void getMessage(String senderName, String msg) throws RemoteException {
         if (senderName == null) {
-            roomName = null;
             javax.swing.JOptionPane.showMessageDialog(frame, "Sala fechada pelo servidor.", "Info", javax.swing.JOptionPane.INFORMATION_MESSAGE);
             leaveRoom();
+            roomName = null;
+
             setupUserGUI();
         } else {
             updateTextArea(senderName + ": " + msg);
