@@ -1,5 +1,3 @@
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -30,7 +28,6 @@ public class UserChat extends UnicastRemoteObject implements IUserChat {
                 try {
                     leaveRoom();
                 } catch (RemoteException e1) {
-                    // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
             }
@@ -38,7 +35,6 @@ public class UserChat extends UnicastRemoteObject implements IUserChat {
         userGUI.addWindowListener(exitListener);
         
         this.userName = this.userGUI.setUserName();
-        // this.userGUI.setRoomName(roomName);
     }
 
     public UserGUI getUserGUI() {
@@ -99,7 +95,6 @@ public class UserChat extends UnicastRemoteObject implements IUserChat {
         try {
             
             IRoomChat room = (IRoomChat) registry.lookup(newRoomName);
-            //IRoomChat room = (IRoomChat) Naming.lookup(newRoomName);
             room.joinRoom(userName, this);
             this.roomChat = room;
             return true;
@@ -124,8 +119,4 @@ public class UserChat extends UnicastRemoteObject implements IUserChat {
         }
     }
 
-    public Object getRegistry() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getRegistry'");
-    }
 }
